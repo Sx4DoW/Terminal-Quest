@@ -1,10 +1,10 @@
 """Menu module for Terminal Quest."""
-from typing import Callable, Dict, List, Optional
+from typing import List
 
-from utils.Button import Button
 from utils import colors
-import sys
-from utils.gamestate import GameState
+from utils.Button import Button
+from utils.GameState import GameState
+from utils.GameObject import GameObject
 from pygame import Rect
 
 WIDTH = GameState.width
@@ -17,7 +17,7 @@ BUTTON_ACTIVE_COLOR = HACKER_PALETTE[0]
 TEXT_COLOR = "white"
 
 
-class Menu:
+class Menu(GameObject):
     """Menu screen class for displaying menus with buttons.
 
     This class is configurable by passing a title and a list of button
@@ -68,6 +68,16 @@ class Menu:
             List of button instances
         """
         return self.buttons
+    
+    def update(self, mouse_pos, button=None) -> None:
+        """Update menu buttons based on mouse position.
+
+        Args:
+            mouse_pos: Tuple of (x, y) mouse coordinates
+        """
+        print(f"Updating menu '{self.title}'")
+        for btn in self.buttons:
+            btn.update(mouse_pos, button)
 
 """Main and settings menu definitions."""
 
@@ -103,15 +113,17 @@ mainMenu = Menu(
     ],
 )
 
-
-# Settings menu (placeholder - add Buttons here as needed)
-def on_settings_menu_click(button_index: int) -> None:
-    """Handle settings menu button clicks (placeholder)."""
-    # TODO: implement actual settings actions
-    pass
-
 settingsMenu = Menu(
     game_state=GameState,
     title="Settings",
-    buttons=[],
+    buttons=[
+        Button(
+            rect=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
+            text="Back to Main Menu",
+            text_color=TEXT_COLOR,
+            inactive_color=BUTTON_INACTIVE_COLOR,
+            active_color=BUTTON_ACTIVE_COLOR,
+            on_click=lambda: GameState.set_screen(GameState.SCREEN_MAIN_MENU),
+        ),
+    ],
 )

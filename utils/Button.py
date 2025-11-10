@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 from pygame import Rect
 
-from utils.gameobject import GameObject
+from utils.GameObject import GameObject
 
 
 class Button(GameObject):
@@ -40,26 +40,28 @@ class Button(GameObject):
         self.active_color = active_color
         self.on_click = on_click
 
-    def is_clicked(self, mouse_pos):
-        """Check if button was clicked at given position.
+    def is_clicked(self, mouse_pos, button) -> bool:
+        """Check if the button is clicked based on mouse position.
         
         Args:
             mouse_pos: Tuple of (x, y) mouse coordinates
-            
         Returns:
-            True if click is within button rect, False otherwise
+            True if mouse_pos is within button rect and left mouse button is clicked, False otherwise
         """
-        return self.rect.collidepoint(mouse_pos)
-    
-    def update(self, mouse_pos):
+        return self.rect.collidepoint(mouse_pos) and button == 1
+
+    def update(self, mouse_pos, button=None) -> None:
         """Update button state based on mouse position.
         
         Args:
             mouse_pos: Tuple of (x, y) mouse coordinates
         """
+        print(f"Updating button '{self.text}'")
         self.is_hovered = self.rect.collidepoint(mouse_pos)
-        if self.is_clicked(mouse_pos):
+        if self.is_clicked(mouse_pos, button):
             self.click()
+        #print(f"Button '{self.text}' hovered {self.is_hovered} clicked={self.is_clicked(mouse_pos, button)}")
+
 
     def click(self) -> None:
         """Invoke the button's click action, if any."""

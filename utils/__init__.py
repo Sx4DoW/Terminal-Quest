@@ -2,6 +2,6 @@
 from utils.Button import Button
 from utils import colors
 from utils import config
-from utils import gamestate
+from utils import GameState
 
-__all__ = ["Button", "colors", "config", "gamestate"]
+__all__ = ["Button", "colors", "config", "GameState"]

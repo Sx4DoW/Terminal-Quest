@@ -7,6 +7,8 @@ static container.
 
 from typing import List
 
+from utils.GameObject import GameObject
+from utils.SparseSet import SparseSet
 
 class GameState:
     """Static-like container for global game state.
@@ -29,8 +31,8 @@ class GameState:
     # Current screen identifier
     current_screen: str = SCREEN_MAIN_MENU
 
-    # List of drawable game objects
-    game_objects: List[object] = []
+    # List of game objects
+    game_objects: List[GameObject] = SparseSet()
 
     @classmethod
     def set_screen(cls, name: str) -> None:
@@ -42,9 +44,21 @@ class GameState:
         Raises:
             ValueError: If screen name is not valid
         """
-        valid_screens = (cls.SCREEN_MAIN_MENU, cls.SCREEN_SETTINGS, cls.SCREEN_GAME)
+        from utils.Menu import mainMenu, settingsMenu
+        menu_objs = {
+            cls.SCREEN_MAIN_MENU: mainMenu,
+            cls.SCREEN_SETTINGS: settingsMenu,
+            cls.SCREEN_GAME: None,
+            cls.SCREEN_QUIT: None,
+        }
+        valid_screens = (cls.SCREEN_MAIN_MENU, cls.SCREEN_SETTINGS, cls.SCREEN_GAME, cls.SCREEN_QUIT)
+        
         if name not in valid_screens:
             raise ValueError(f"Invalid screen: {name}. Must be one of {valid_screens}")
+        
+        GameState.remove_gameObject(menu_objs.get(cls.current_screen))
+        GameState.add_gameObject(menu_objs.get(name))
+
         cls.current_screen = name
 
     @classmethod
@@ -58,3 +72,21 @@ class GameState:
             True if current_screen matches name, False otherwise
         """
         return cls.current_screen == name
+    
+    @classmethod
+    def add_gameObject(cls, obj: GameObject) -> None:
+        """Add a game object to the global list.
+
+        Args:
+            obj: Game object instance to add
+        """
+        cls.game_objects.add(obj)
+
+    @classmethod
+    def remove_gameObject(cls, obj: GameObject) -> None:
+        """Remove a game object from the global list.
+
+        Args:
+            obj: Game object instance to remove
+        """
+        cls.game_objects.remove(obj)

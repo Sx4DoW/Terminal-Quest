@@ -1,7 +1,7 @@
 """Utility functions for reading, writing, and editing settings in a settings.txt file.
 Each setting is expected to be in the format: KEY = VALUE"""
 
-class settings:
+class SettingsManager:
     def __init__(self, filename = "settings.txt", settings_dict=None) -> None:
         """Initializes the settings manager.
         Args:
@@ -13,9 +13,14 @@ class settings:
 
         # Trying to open or create the settings file
         try:
-            open(self.settings_filename, 'rw', encoding='utf-8').close()
-        except OSError:
-            print("Error: Could not open or create the settings file.")
+            open(self.settings_filename, 'r', encoding='utf-8').close()
+        except FileNotFoundError:
+            print(f"Settings file '{self.settings_filename}' not found. Creating a new one.")
+            try:
+                open(self.settings_filename, 'w', encoding='utf-8').close()
+            except Exception as e:
+                print(f"Error creating settings file: {e}")
+            
 
         # Initialize settings dictionary
         if settings_dict is None:
