@@ -25,14 +25,19 @@ class GameState:
     SCREEN_QUIT: str = "Quit"
 
     # Display dimensions
-    width: int = 800
-    height: int = 600
+    width: int = 1280
+    height: int = 720
 
     # Current screen identifier
     current_screen: str = SCREEN_MAIN_MENU
 
     # List of game objects
     game_objects: List[GameObject] = SparseSet()
+
+    # General volume
+    general_volume: bool = True
+    # Music volume
+    music_volume: bool = True
 
     @classmethod
     def set_screen(cls, name: str) -> None:
@@ -90,3 +95,31 @@ class GameState:
             obj: Game object instance to remove
         """
         cls.game_objects.remove(obj)
+
+    @classmethod
+    def general_volume_status(cls) -> str:
+        """Get the current general volume status as a string.
+
+        Returns:
+            "On" if general volume is enabled, "Off" otherwise
+        """
+        return "On" if cls.general_volume else "Off"
+    
+    @classmethod
+    def music_volume_status(cls) -> str:
+        """Get the current music volume status as a string.
+
+        Returns:
+            "On" if music volume is enabled, "Off" otherwise
+        """
+        return "On" if cls.music_volume else "Off"
+    
+    @classmethod
+    def toggle_general_volume(cls) -> None:
+        """Toggle the general volume setting."""
+        cls.general_volume = not cls.general_volume
+    
+    @classmethod
+    def toggle_music_volume(cls) -> None:
+        """Toggle the music volume setting."""
+        cls.music_volume = not cls.music_volume

@@ -81,66 +81,80 @@ class Menu(GameObject):
             btn.update(mouse_pos, button)
 
 """Main and settings menu definitions."""
+start_game_button = Button(
+    target=Rect((WIDTH / 16 * 5, HEIGHT / 16 * 6), (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
+    text="Start Game",
+    text_color=TEXT_COLOR,
+    inactive_color=BUTTON_INACTIVE_COLOR,
+    active_color=BUTTON_ACTIVE_COLOR,
+    on_click=lambda: GameState.set_screen(GameState.SCREEN_GAME),
+)
+settings_button = Button(
+    target=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 10), (WIDTH / 16 * 4, HEIGHT / 16)),
+    text="Settings",
+    text_color=TEXT_COLOR,
+    inactive_color=BUTTON_INACTIVE_COLOR,
+    active_color=BUTTON_ACTIVE_COLOR,
+    on_click=lambda: GameState.set_screen(GameState.SCREEN_SETTINGS),
+)
+quit_button = Button(
+    target=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
+    text="Quit",
+    text_color=TEXT_COLOR,
+    inactive_color=BUTTON_INACTIVE_COLOR,
+    active_color=BUTTON_ACTIVE_COLOR,
+    on_click=lambda: GameState.set_screen(GameState.SCREEN_QUIT),
+)
 
 # Main menu buttons: each Button instance owns its on_click behavior.
 mainMenu = Menu(
     game_state=GameState,
     title="Terminal Quest",
     buttons=[
-        Button(
-            target=Rect((WIDTH / 16 * 5, HEIGHT / 16 * 6), (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
-            text="Start Game",
-            text_color=TEXT_COLOR,
-            inactive_color=BUTTON_INACTIVE_COLOR,
-            active_color=BUTTON_ACTIVE_COLOR,
-            on_click=lambda: GameState.set_screen(GameState.SCREEN_GAME),
-        ),
-        Button(
-            target=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 10), (WIDTH / 16 * 4, HEIGHT / 16)),
-            text="Settings",
-            text_color=TEXT_COLOR,
-            inactive_color=BUTTON_INACTIVE_COLOR,
-            active_color=BUTTON_ACTIVE_COLOR,
-            on_click=lambda: GameState.set_screen(GameState.SCREEN_SETTINGS),
-        ),
-        Button(
-            target=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
-            text="Quit",
-            text_color=TEXT_COLOR,
-            inactive_color=BUTTON_INACTIVE_COLOR,
-            active_color=BUTTON_ACTIVE_COLOR,
-            on_click=lambda: GameState.set_screen(GameState.SCREEN_QUIT),
-        ),
+        start_game_button,
+        settings_button,
+        quit_button,
     ],
 )
 
+back_to_main_button = Button(
+    target = Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
+    text="Back to Main Menu",
+    text_color=TEXT_COLOR,
+    inactive_color=BUTTON_INACTIVE_COLOR,
+    active_color=BUTTON_ACTIVE_COLOR,
+    on_click=lambda: GameState.set_screen(GameState.SCREEN_MAIN_MENU),
+)
+general_volume_button = Button(
+    target=Rect((WIDTH / 16 * 3, HEIGHT / 16 * 6), (WIDTH / 16 * 4, HEIGHT / 16*2)),
+    text=f"General Volume:\n{GameState.general_volume_status()}",
+    text_color=TEXT_COLOR,
+    inactive_color=BUTTON_INACTIVE_COLOR,
+    active_color=BUTTON_ACTIVE_COLOR,
+    on_click=lambda: on_general_volume_click(),
+)
+def on_general_volume_click() -> None:
+    GameState.general_volume = not GameState.general_volume
+    general_volume_button.text = f"General Volume:\n{GameState.general_volume_status()}"
+
+music_volume_button = Button(
+    target=Rect((WIDTH / 16 * 9, HEIGHT / 16 * 6), (WIDTH / 16 * 4, HEIGHT / 16*2)),
+    text=f"Music Volume:\n{GameState.music_volume_status()}",
+    text_color=TEXT_COLOR,
+    inactive_color=BUTTON_INACTIVE_COLOR,
+    active_color=BUTTON_ACTIVE_COLOR,
+    on_click=lambda: on_music_volume_click(),
+)
+def on_music_volume_click() -> None:
+    GameState.music_volume = not GameState.music_volume
+    music_volume_button.text = f"Music Volume:\n{GameState.music_volume_status()}"
+    
 settingsMenu = Menu(
     game_state=GameState,
     title="Settings",
     buttons=[
-        Button(
-            target = Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
-            text="Back to Main Menu",
-            text_color=TEXT_COLOR,
-            inactive_color=BUTTON_INACTIVE_COLOR,
-            active_color=BUTTON_ACTIVE_COLOR,
-            on_click=lambda: GameState.set_screen(GameState.SCREEN_MAIN_MENU),
-        ),
-        Button(
-            target=Actor("general_volume_on.png", (WIDTH / 16 * 5, HEIGHT / 16 * 6)),
-            # dimension = (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
-            # text="General Volume",
-            # text_color=TEXT_COLOR,
-            # inactive_color=BUTTON_INACTIVE_COLOR,
-            # active_color=BUTTON_ACTIVE_COLOR,
-        ),
-        Button(
-            target=Actor("music_volume_on.png", (WIDTH / 16 * 5, HEIGHT / 16 * 9)),
-            # dimension = (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
-            # text="Music Volume",
-            # text_color=TEXT_COLOR,
-            # inactive_color=BUTTON_INACTIVE_COLOR,
-            # active_color=BUTTON_ACTIVE_COLOR,
-        ),
+        back_to_main_button,
+        general_volume_button,
+        music_volume_button,
     ],
 )
