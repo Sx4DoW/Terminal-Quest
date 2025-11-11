@@ -1,6 +1,6 @@
 import pgzrun
 
-import assets
+import images
 import classes
 from utils.GameState import GameState
 from utils.settings import SettingsManager

@@ -6,6 +6,7 @@ from utils.Button import Button
 from utils.GameState import GameState
 from utils.GameObject import GameObject
 from pygame import Rect
+from pgzero.actor import Actor
 
 WIDTH = GameState.width
 HEIGHT = GameState.height
@@ -87,7 +88,7 @@ mainMenu = Menu(
     title="Terminal Quest",
     buttons=[
         Button(
-            hitbox=Rect((WIDTH / 16 * 5, HEIGHT / 16 * 6), (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
+            target=Rect((WIDTH / 16 * 5, HEIGHT / 16 * 6), (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
             text="Start Game",
             text_color=TEXT_COLOR,
             inactive_color=BUTTON_INACTIVE_COLOR,
@@ -95,7 +96,7 @@ mainMenu = Menu(
             on_click=lambda: GameState.set_screen(GameState.SCREEN_GAME),
         ),
         Button(
-            hitbox=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 10), (WIDTH / 16 * 4, HEIGHT / 16)),
+            target=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 10), (WIDTH / 16 * 4, HEIGHT / 16)),
             text="Settings",
             text_color=TEXT_COLOR,
             inactive_color=BUTTON_INACTIVE_COLOR,
@@ -103,7 +104,7 @@ mainMenu = Menu(
             on_click=lambda: GameState.set_screen(GameState.SCREEN_SETTINGS),
         ),
         Button(
-            hitbox=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
+            target=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
             text="Quit",
             text_color=TEXT_COLOR,
             inactive_color=BUTTON_INACTIVE_COLOR,
@@ -118,28 +119,28 @@ settingsMenu = Menu(
     title="Settings",
     buttons=[
         Button(
-            hitbox=Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
+            target = Rect((WIDTH / 16 * 6, HEIGHT / 16 * 12), (WIDTH / 16 * 4, HEIGHT / 16)),
             text="Back to Main Menu",
             text_color=TEXT_COLOR,
             inactive_color=BUTTON_INACTIVE_COLOR,
             active_color=BUTTON_ACTIVE_COLOR,
             on_click=lambda: GameState.set_screen(GameState.SCREEN_MAIN_MENU),
         ),
-        GameObject(
-            hitbox=Rect((WIDTH / 16 * 5, HEIGHT / 16 * 6), (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
-            text="General Volume",
-            text_color=TEXT_COLOR,
-            inactive_color=BUTTON_INACTIVE_COLOR,
-            active_color=BUTTON_ACTIVE_COLOR,
-            image=None, #TODO add image
+        Button(
+            target=Actor("general_volume_on.png", (WIDTH / 16 * 5, HEIGHT / 16 * 6)),
+            # dimension = (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
+            # text="General Volume",
+            # text_color=TEXT_COLOR,
+            # inactive_color=BUTTON_INACTIVE_COLOR,
+            # active_color=BUTTON_ACTIVE_COLOR,
         ),
         Button(
-            hitbox=Rect((WIDTH / 16 * 5, HEIGHT / 16 * 9), (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
-            text="Music Volume",
-            text_color=TEXT_COLOR,
-            inactive_color=BUTTON_INACTIVE_COLOR,
-            active_color=BUTTON_ACTIVE_COLOR,
-            image=None, #TODO add image
+            target=Actor("music_volume_on.png", (WIDTH / 16 * 5, HEIGHT / 16 * 9)),
+            # dimension = (WIDTH / 16 * 6, HEIGHT / 16 * 2)),
+            # text="Music Volume",
+            # text_color=TEXT_COLOR,
+            # inactive_color=BUTTON_INACTIVE_COLOR,
+            # active_color=BUTTON_ACTIVE_COLOR,
         ),
     ],
 )

@@ -1,4 +1,5 @@
 """Base class for all game objects."""
+from typing import Union
 from pygame import Rect
 from pgzero.actor import Actor
 
@@ -12,8 +13,7 @@ class GameObject:
 
     def __init__(
             self,
-            hitbox: Rect = None,
-            image: Actor = None,
+            target: Union[Rect, Actor],
             hoverable: bool = False,
             draggable: bool = False,
             collidable: bool = False
