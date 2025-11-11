@@ -19,8 +19,7 @@ class GameObject:
             collidable: bool = False
     ):
         """Initialize the game object."""
-        self.hitbox = hitbox
-        self.image = image
+        self.target = target
         self.hoverable = hoverable
         self.draggable = draggable
         self.collidable = collidable
