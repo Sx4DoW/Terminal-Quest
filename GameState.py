@@ -4,7 +4,7 @@ This module exposes a class-based (static) GameState. The class uses
 class attributes to store application-wide state so it behaves like a
 static container.
 """
-
+from typing import Generic, TypeVar
 from classes.GameObject import GameObject
 from utils.SparseSet import SparseSet
 from random import Random
@@ -30,8 +30,8 @@ class GameState:
     # Current screen identifier
     current_screen: str = SCREEN_MAIN_MENU
 
-    # List of game objects
-    game_objects: SparseSet[GameObject] = SparseSet()
+    # List of game objects (SparseSet containing GameObject instances)
+    game_objects: SparseSet = SparseSet()
 
     # General volume
     general_volume: bool = True
