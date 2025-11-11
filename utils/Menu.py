@@ -3,8 +3,8 @@ from typing import List
 
 from utils import colors
 from utils.Button import Button
-from utils.GameState import GameState
-from utils.GameObject import GameObject
+from GameState import GameState
+from classes.GameObject import GameObject
 from pygame import Rect
 from pgzero.actor import Actor
 

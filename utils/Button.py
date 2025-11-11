@@ -2,7 +2,7 @@ from typing import Callable, Optional, Union
 import pygame
 from pgzero.actor import Actor
 
-from utils.GameObject import GameObject
+from classes.GameObject import GameObject
 
 
 class Button(GameObject):

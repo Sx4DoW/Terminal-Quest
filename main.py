@@ -2,7 +2,7 @@ import pgzrun
 
 import images
 import classes
-from utils.GameState import GameState
+from GameState import GameState
 from utils.settings import SettingsManager
 from utils import Menu
 from pygame import Rect
@@ -45,12 +45,9 @@ def main():
     # Initialize game and start PgZero
     settings_manager = SettingsManager("settings.txt")
     print("Loaded settings")
+    print("Game initialized")
     # Loading Main Menu
     GameState.set_screen(GameState.SCREEN_MAIN_MENU)
-
-    print("Game initialized")
     print("Game started")
-
-
 
 main()

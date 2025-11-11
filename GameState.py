@@ -5,10 +5,9 @@ class attributes to store application-wide state so it behaves like a
 static container.
 """
 
-from typing import List
-
-from utils.GameObject import GameObject
+from classes.GameObject import GameObject
 from utils.SparseSet import SparseSet
+from random import Random
 
 class GameState:
     """Static-like container for global game state.
@@ -32,12 +31,15 @@ class GameState:
     current_screen: str = SCREEN_MAIN_MENU
 
     # List of game objects
-    game_objects: List[GameObject] = SparseSet()
+    game_objects: SparseSet[GameObject] = SparseSet()
 
     # General volume
     general_volume: bool = True
     # Music volume
     music_volume: bool = True
+
+    # Random seed for procedural generation
+    seed: int = Random().randint(0, 2**32 - 1)
 
     @classmethod
     def set_screen(cls, name: str) -> None:
@@ -50,10 +52,11 @@ class GameState:
             ValueError: If screen name is not valid
         """
         from utils.Menu import mainMenu, settingsMenu
+        from classes.Game import game
         menu_objs = {
             cls.SCREEN_MAIN_MENU: mainMenu,
             cls.SCREEN_SETTINGS: settingsMenu,
-            cls.SCREEN_GAME: None,
+            cls.SCREEN_GAME: game,
             cls.SCREEN_QUIT: None,
         }
         valid_screens = (cls.SCREEN_MAIN_MENU, cls.SCREEN_SETTINGS, cls.SCREEN_GAME, cls.SCREEN_QUIT)

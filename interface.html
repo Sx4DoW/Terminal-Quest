@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>16×16 Grid — 1280×720</title>
+  <style>
+    :root{
+      --window-w:1280px;
+      --window-h:720px;
+      --cols:16;
+      --rows:16;
+      --cell-w:80px; /* 1280/16 */
+      --cell-h:45px; /* 720/16 */
+      --gap:0px;
+    }
+
+    body{
+      margin:24px;
+      font-family:system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+      display:flex;
+      gap:20px;
+      align-items:flex-start;
+      background:#f6f7fb;
+      color:#111;
+    }
+
+    .stage{
+      width:var(--window-w);
+      height:var(--window-h);
+      border:1px solid rgba(0,0,0,0.12);
+      box-shadow:0 8px 24px rgba(10,10,20,0.06);
+      background:linear-gradient(180deg, #fff, #fbfdff);
+      display:grid;
+      grid-template-columns: repeat(var(--cols), var(--cell-w));
+      grid-template-rows: repeat(var(--rows), var(--cell-h));
+      gap:var(--gap);
+      position:relative;
+      user-select:none;
+      overflow:hidden;
+    }
+
+    .cell{
+      box-sizing:border-box;
+      border:1px solid rgba(0,0,0,0.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:10px;
+      color:rgba(0,0,0,0.6);
+      background:transparent;
+    }
+
+    .controls{
+      min-width:260px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .panel{
+      padding:12px 14px;
+      background:white;
+      border-radius:10px;
+      box-shadow:0 6px 18px rgba(12,12,24,0.04);
+    }
+
+    button, label{cursor:pointer}
+    .small{font-size:13px}
+
+    .hidden { display:none !important; }
+
+    /* responsive hint when stage is larger than viewport */
+    @media (max-width:1400px){
+      body{flex-direction:column;align-items:center}
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage" aria-label="1280 by 720 grid container"></div>
+
+  <div class="controls">
+    <div class="panel">
+      <div style="font-weight:600;margin-bottom:8px">Grid: 16 × 16 — Window: 1280 × 720</div>
+      <div class="small">Cell size: 80 × 45 px</div>
+    </div>
+
+    <div class="panel">
+      <button id="toggleCoords">Toggle coordinates</button>
+      <button id="toggleBorders" style="margin-left:8px">Toggle borders</button>
+    </div>
+
+    <div class="panel small">
+      <div style="margin-bottom:8px"><strong>How to use</strong></div>
+      <ol>
+        <li>Open this file in a browser. The stage is fixed to 1280×720.</li>
+        <li>Click <em>Toggle coordinates</em> to show or hide cell indexes (col,row).</li>
+        <li>Click <em>Toggle borders</em> to hide the grid lines for a clean view.</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const cols = 16, rows = 16;
+    const stage = document.getElementById('stage');
+
+    // Build grid
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const d = document.createElement('div');
+        d.className = 'cell';
+        d.dataset.coord = `${c+1},${r+1}`; // 1-based
+        stage.appendChild(d);
+      }
+    }
+
+    const toggleCoordsBtn = document.getElementById('toggleCoords');
+    const toggleBordersBtn = document.getElementById('toggleBorders');
+    let coordsVisible = false;
+    let bordersVisible = true;
+
+    toggleCoordsBtn.addEventListener('click', ()=>{
+      coordsVisible = !coordsVisible;
+      document.querySelectorAll('.cell').forEach(cell=>{
+        if(coordsVisible){
+          cell.textContent = cell.dataset.coord;
+        } else {
+          cell.textContent = '';
+        }
+      });
+      toggleCoordsBtn.textContent = coordsVisible ? 'Hide coordinates' : 'Show coordinates';
+    });
+
+    toggleBordersBtn.addEventListener('click', ()=>{
+      bordersVisible = !bordersVisible;
+      document.querySelectorAll('.cell').forEach(cell=>{
+        cell.style.border = bordersVisible ? '1px solid rgba(0,0,0,0.08)' : 'none';
+      });
+      toggleBordersBtn.textContent = bordersVisible ? 'Hide borders' : 'Show borders';
+    });
+
+    // initial state: coordinates hidden
+    document.querySelectorAll('.cell').forEach(cell=>cell.textContent = '');
+  </script>
+</body>
+</html>
