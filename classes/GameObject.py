@@ -24,6 +24,11 @@ class GameObject:
         self.draggable = draggable
         self.collidable = collidable
 
+    def __repr__(self):
+        if isinstance(self.target, Actor):
+            return f"GameObject(target=Actor({self.target.image}))"
+        return f"GameObject(target={self.target})"
+
     def draw(self, screen) -> None:
         """Draw the game object on screen.
 

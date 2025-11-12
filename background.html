@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Background</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+        }
+        canvas {
+            border: 1px solid #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border: 1px solid #0f0;
+            color: #0f0;
+            font-family: monospace;
+        }
+        button {
+            background: #001a00;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: monospace;
+            margin: 5px;
+        }
+        button:hover {
+            background: #003300;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg" width="1280" height="720"></canvas>
+    <div class="controls">
+        <div>Dungeon Crawler BG</div>
+        <button onclick="downloadImage()">Download PNG</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        const centerX = w / 2;
+        const centerY = h / 2;
+
+        // Create radial gradient for dramatic lighting effect
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(w, h) * 0.7);
+        
+        // Terminal green palette with darker shadows
+        gradient.addColorStop(0, '#1a4d1a');    // Brighter center
+        gradient.addColorStop(0.3, '#0d3d0d');  // Mid-tone
+        gradient.addColorStop(0.6, '#062906');  // Dark green
+        gradient.addColorStop(0.85, '#021a02'); // Very dark
+        gradient.addColorStop(1, '#000f00');    // Almost black green
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+
+        // Add subtle noise/texture for retro CRT feel
+        const imageData = ctx.getImageData(0, 0, w, h);
+        const data = imageData.data;
+        
+        for (let i = 0; i < data.length; i += 4) {
+            const noise = (Math.random() - 0.5) * 8;
+            data[i] += noise;     // R
+            data[i + 1] += noise; // G
+            data[i + 2] += noise; // B
+        }
+        
+        ctx.putImageData(imageData, 0, 0);
+
+        // Add vignette effect for more dramatic shadows
+        const vignette = ctx.createRadialGradient(centerX, centerY, w * 0.3, centerX, centerY, w * 0.8);
+        vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        vignette.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
+        
+        ctx.fillStyle = vignette;
+        ctx.fillRect(0, 0, w, h);
+
+        // Add scanline effect for terminal aesthetic
+        ctx.strokeStyle = 'rgba(0, 20, 0, 0.15)';
+        ctx.lineWidth = 1;
+        for (let y = 0; y < h; y += 3) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(w, y);
+            ctx.stroke();
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'dungeon_bg_1280x720.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>

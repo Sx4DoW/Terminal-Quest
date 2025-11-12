@@ -1,13 +1,15 @@
 from classes.Enemy import Enemy
 from classes.GameObject import GameObject
 from utils.SparseSet import SparseSet
+from pgzero.actor import Actor
 from random import Random
 
 class Room(GameObject):
     # Each room has a probability to spawn
-    ROOM_TYPES: dict[str, float] = {"LOOT": 0.3, "COMBAT": 1.0, "START": 0.0, "BOSS": 0.0}
+    ROOM_TYPES: dict[str, float] = {"LOOT": 0.3, "COMBAT": 1.0, "START": 0.0, "BOSS": 0.0, "SECRET": 0.0}
 
     def __init__(self):
+        super().__init__(Actor(f"room"))
         self.adjacent_rooms: dict[str, Room] = {
             "SOUTH": None,
             "EAST": None,
@@ -73,4 +75,4 @@ class Room(GameObject):
             
 
 
-secret_room = Room()
+secret_room = Room()  # A predefined secret room instance

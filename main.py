@@ -1,11 +1,6 @@
-import pgzrun
-
-import images
-import classes
 from GameState import GameState
 from utils.settings import SettingsManager
-from utils import Menu
-from pygame import Rect
+from utils.Background import Background
 
 # Game dimensions
 WIDTH = GameState.width
@@ -13,12 +8,8 @@ HEIGHT = GameState.height
 
 def draw():
     """Main draw function called by PgZero every frame."""
-    if GameState.is_screen(GameState.SCREEN_MAIN_MENU):
-        Menu.mainMenu.draw(screen) # type: ignore
-    elif GameState.is_screen(GameState.SCREEN_SETTINGS):
-        Menu.settingsMenu.draw(screen) # type: ignore
-    elif GameState.is_screen(GameState.SCREEN_GAME):
-        GameState.get_game().draw(screen) # type: ignore
+    for gameobject in GameState.game_objects:
+        gameobject.draw(screen) #type: ignore
 
 
 def update():
@@ -46,8 +37,10 @@ def main():
     # Initialize game and start PgZero
     settings_manager = SettingsManager("settings.txt")
     #print("Loaded settings")
+    #print("Initializing game...")
+    GameState.add_gameObject(Background("background"))  # Background actor
     #print("Game initialized")
-    # Loading Main Menu
+    #print("Loading Main Menu")
     GameState.set_screen(GameState.SCREEN_MAIN_MENU)
     #print("Game started")
 

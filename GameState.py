@@ -28,7 +28,7 @@ class GameState:
     height: int = 720
 
     # Current screen identifier
-    current_screen: str = SCREEN_MAIN_MENU
+    current_screen: str = None
 
     # List of game objects (SparseSet containing GameObject instances)
     game_objects: SparseSet = SparseSet()
@@ -46,7 +46,7 @@ class GameState:
 
     @classmethod
     def get_game(cls):
-        """Get or create the Game instance (lazy initialization).
+        """Get or create the Game instance.
         
         Returns:
             Game instance
@@ -79,13 +79,21 @@ class GameState:
         if name not in valid_screens:
             raise ValueError(f"Invalid screen: {name}. Must be one of {valid_screens}")
         
-        #print(f"Switching screen from {cls.current_screen} to {name}")
-        #print("before gameobjs:", cls.game_objects)
-        GameState.remove_gameObject(menu_objs.get(cls.current_screen))
-        GameState.add_gameObject(menu_objs.get(name))
-        #print("after gameobjs:", cls.game_objects)
+        # Remove only the current screen, keep background
+        current_screen_obj = menu_objs.get(cls.current_screen)
+        if current_screen_obj is not None:
+            GameState.remove_gameObject(current_screen_obj)
+        
+        # Add the new screen
+        new_screen_obj = menu_objs.get(name)
+        if new_screen_obj is not None:
+            GameState.add_gameObject(new_screen_obj)
 
         cls.current_screen = name
+
+        # Debug prints
+        print(f"Switched screen from {cls.current_screen} to {name}")
+        print("gameobjs:", cls.game_objects)
 
     @classmethod
     def is_screen(cls, name: str) -> bool:

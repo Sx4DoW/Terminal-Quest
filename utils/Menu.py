@@ -44,6 +44,9 @@ class Menu(GameObject):
         self.title = title
         self.buttons: List[Button] = buttons
 
+    def __repr__(self):
+        return f"Menu(title={self.title})"
+
     def draw(self, screen) -> None:
         """Draw the menu screen.
 
@@ -51,8 +54,8 @@ class Menu(GameObject):
             screen: PgZero screen object
         """
         #print(f"Drawing menu '{self.title}'")
-        screen.clear()
-        screen.fill((10, 10, 10))
+        # We have a background GameObject in GameState, so no need to fill
+        # screen.fill((10, 10, 10))
 
         # Draw title
         title = Rect((WIDTH / 16 * 4, HEIGHT / 16 * 1), (WIDTH / 16 * 8, HEIGHT / 16 * 3))

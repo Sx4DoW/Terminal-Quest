@@ -3,10 +3,9 @@ from classes.Player import Player
 from classes.Level import Level
 from utils.SparseSet import SparseSet
 
-class Game:
+class Game(GameObject):
     def __init__(self, n_levels: int = 3):
-        from GameState import GameState
-        
+        from GameState import GameState        
         self.objects: SparseSet = SparseSet()
         self.levels: list[Level] = []
         for _ in range(n_levels):
@@ -16,6 +15,7 @@ class Game:
         self.spawnPlayer()
 
     def draw(self, screen):
+        screen.clear()
         #print("Drawing game")
         self.active_level.draw(screen)
         for obj in self.objects:
@@ -29,5 +29,5 @@ class Game:
 
     def spawnPlayer(self):
         #TODO
-        player = Player()
-        self.objects.add(player)
+        self.player = Player()
+        self.objects.add(self.player)
